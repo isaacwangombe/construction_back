@@ -68,3 +68,11 @@ class ById(APIView):
     item = Item.get_by_id(id)
     serializers = ItemSerializer(item, many=False)
     return Response(serializers.data)
+
+  def get(self, request,id, format=None):
+    item = Item.get_by_id(id)
+    item.delete()    
+    return Response({'message': 'item was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
+
+  
+
