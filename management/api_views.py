@@ -42,7 +42,7 @@ class ItemList(APIView):
     serializers = ItemSerializer(all_item, many=True)
     return Response(serializers.data)
 
-  def put(self, request, format=None):
+  def post(self, request, format=None):
     serializers = ItemSerializer(data=request.data)
     if serializers.is_valid():
       serializers.save()
@@ -74,5 +74,12 @@ class ById(APIView):
     item.delete()    
     return Response({'message': 'item was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
 
-  
+  def put(self, request,id, format=None):
+    item = Item.get_by_id(id)
+    serializers = ItemSerializer(item, data=request.data)
+    if serializers.is_valid():
+      serializers.save()
+      return Response(serializers.data, status=status.HTTP_201_CREATED)
+    return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
