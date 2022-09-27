@@ -74,7 +74,7 @@ class ById(APIView):
     item.delete()    
     return Response({'message': 'item was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
 
-  def put(self, request,id, format=None):
+  def patch(self, request,id, format=None):
     item = Item.get_by_id(id)
     serializers = ItemSerializer(item, data=request.data)
     if serializers.is_valid():
