@@ -42,7 +42,7 @@ class ItemList(APIView):
     serializers = ItemSerializer(all_item, many=True)
     return Response(serializers.data)
 
-  def post(self, request, format=None):
+  def put(self, request, format=None):
     serializers = ItemSerializer(data=request.data)
     if serializers.is_valid():
       serializers.save()
