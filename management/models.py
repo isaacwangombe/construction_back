@@ -2,20 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-class Date(models.Model):
-	date = models.DateField(auto_now_add=False)
-	
-	def __str__(self):
-		return str(self.date)
-
-	
-	@classmethod
-	def get_all(cls):
-			table = Date.objects.all()
-			return table	
-	
-
-
 class Units(models.Model):
 	units = models.CharField(max_length =300)
 
@@ -51,7 +37,8 @@ class Item(models.Model):
 	price = models.IntegerField()
 	units = models.ForeignKey(Units, on_delete=models.CASCADE, blank=True, null=True)
 	supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, blank=True, null=True)
-	date = models.ForeignKey(Date, on_delete=models.CASCADE, blank=True, null=True)
+	date = models.DateField(auto_now_add=False, blank=True, null=True)
+
 	
 	def __str__(self):
 		return str(f"item - {self.item}, date - {self.date}")

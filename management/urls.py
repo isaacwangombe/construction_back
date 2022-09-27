@@ -5,7 +5,6 @@ urlpatterns = [
   path('', views.welcome,name = 'test'),
 
 
-  path('api/all_date', api_views.DateList.as_view()),
   path('api/all_units', api_views.UnitsList.as_view()),
   path('api/all_suppliers', api_views.SupplierList.as_view()),
   path('api/all_items', api_views.ItemList.as_view()),

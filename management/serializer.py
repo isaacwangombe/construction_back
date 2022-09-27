@@ -1,17 +1,11 @@
 from rest_framework import serializers
-from .models import Item,Supplier, Units, Date
+from .models import Item,Supplier, Units
 
 
 class SupplierSerializer(serializers.ModelSerializer):
   class Meta:
     model = Supplier
     fields = ('id', 'supplier', 'phone')
-
-
-class DateSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = Date
-    fields = ('id', 'date')
 
 
 class UnitsSerializer(serializers.ModelSerializer):
@@ -23,7 +17,6 @@ class UnitsSerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
   units = UnitsSerializer()
   supplier = SupplierSerializer()
-  date = DateSerializer()
 
   class Meta:
     model = Item
