@@ -66,6 +66,51 @@ class ItemList(APIView):
 
 
 
+class BySupplierList(APIView):
+  def get(self, request,supplier, format=None):
+    items = Item.filter_by_supplier(supplier)
+    serializers = ItemSerializer(items, many=True)
+    return Response(serializers.data)
+
+  def post(self, request, format=None):
+    serializers = ItemSerializer(data=request.data)
+    if serializers.is_valid():
+      serializers.save()
+      return Response(serializers.data, status=status.HTTP_201_CREATED)
+    return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class ByDateList(APIView):
+  def get(self, request, date, format=None):
+    items = Item.filter_by_date(date)
+    serializers = ItemSerializer(items, many=True)
+    return Response(serializers.data)
+
+  def post(self, request, format=None):
+    serializers = ItemSerializer(data=request.data)
+    if serializers.is_valid():
+      serializers.save()
+      return Response(serializers.data, status=status.HTTP_201_CREATED)
+    return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class ById(APIView):
+  def get(self, request,id, format=None):
+    item = Item.get_by_id(id)
+    serializers = ItemSerializer(item, many=False)
+    return Response(serializers.data)
+
+  def post(self, request, format=None):
+    serializers = ItemSerializer(data=request.data)
+    if serializers.is_valid():
+      serializers.save()
+      return Response(serializers.data, status=status.HTTP_201_CREATED)
+    return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 class ItemList(APIView):
   def get(self, request, format=None):
     all_item = Item.get_all()
