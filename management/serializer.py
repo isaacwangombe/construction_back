@@ -15,8 +15,8 @@ class UnitsSerializer(serializers.ModelSerializer):
 
 
 class ItemSerializer(serializers.ModelSerializer):
-  units = UnitsSerializer()
-  supplier = SupplierSerializer()
+  # units = UnitsSerializer()
+  # supplier = SupplierSerializer()
 
   class Meta:
     model = Item
