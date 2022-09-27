@@ -15,7 +15,7 @@ class UnitsSerializer(serializers.ModelSerializer):
 
 
 class ItemSerializer(serializers.ModelSerializer):
-  # units = UnitsSerializer()
+  units = UnitsSerializer('units')
   # supplier = SupplierSerializer()
 
   class Meta:
