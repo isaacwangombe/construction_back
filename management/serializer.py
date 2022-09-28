@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Item,Supplier, Units
+from .models import Item,Supplier
 
 
 class SupplierSerializer(serializers.ModelSerializer):
@@ -8,15 +8,8 @@ class SupplierSerializer(serializers.ModelSerializer):
     fields = ('id', 'supplier', 'phone')
 
 
-class UnitsSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = Units
-    fields = ('id', 'units')
-
-
 class ItemSerializer(serializers.ModelSerializer):
-  # units = UnitsSerializer('units')
-  # supplier = SupplierSerializer()
+
 
   class Meta:
     model = Item

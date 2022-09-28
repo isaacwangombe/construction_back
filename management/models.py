@@ -1,22 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
-class Units(models.Model):
-	units = models.CharField(max_length =300)
-
-	def __str__(self):
-		return str(self.units)	
-
-	class Meta:
-		verbose_name_plural  =  "Units" 
-
-	
-	@classmethod
-	def get_all(cls):
-			table = Units.objects.all()
-			return table	
-
 
 class Supplier(models.Model):
 	supplier = models.CharField(max_length =300)
@@ -35,8 +18,8 @@ class Item(models.Model):
 	item = models.CharField(max_length =300)
 	quantity = models.IntegerField()
 	price = models.IntegerField()
-	units = models.ForeignKey(Units, on_delete=models.CASCADE, blank=True, null=True)
-	supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, blank=True, null=True)
+	units = models.CharField(max_length =300, blank=True, null=True)
+	supplier = models.CharField(max_length =300, blank=True, null=True)
 	date = models.DateField(auto_now_add=False, blank=True, null=True)
 
 	
