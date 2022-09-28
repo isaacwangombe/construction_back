@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Item,Supplier, Units
+from .models import Item,Supplier
 
 # Create your views here.
 
