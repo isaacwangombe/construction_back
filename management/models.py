@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Avg, Sum, Count, Max
 
 
 class Supplier(models.Model):
@@ -50,3 +51,91 @@ class Item(models.Model):
 	def filter_by_supplier(cls, supplier):
 			retrieved = Item.objects.filter(supplier = supplier)
 			return retrieved	
+
+
+	@classmethod
+	def total_price(cls):
+			table = list(Item.objects.aggregate(Sum('price')).values())
+			test = all( i == None for i in table)
+			return 1 if (test) == True else float("".join(map(str,table)))
+
+	@classmethod
+	def total_price_by_item(cls,item):
+			table = list(Item.objects.filter(item__iexact = item).aggregate(Sum('price')).values())
+			test = all( i == None for i in table)
+			return 1 if (test) == True else float("".join(map(str,table)))
+
+
+
+	@classmethod
+	def total_quantity_by_item(cls,item):
+			table = list(Item.objects.filter(item__iexact = item).aggregate(Sum('quantity')).values())
+			test = all( i == None for i in table)
+			return 1 if (test) == True else float("".join(map(str,table)))
+
+
+	
+	@classmethod
+	def average_by_item(cls,item):
+			price = list(Item.objects.filter(item__iexact = item).aggregate(Sum('price')).values())
+			test = all( i == None for i in price)
+			price = 1 if (test) == True else float("".join(map(str,price)))
+	
+			quantity = list(Item.objects.filter(item__iexact = item).aggregate(Sum('quantity')).values())
+			test = all( i == None for i in quantity)
+			quantity = 1 if (test) == True else float("".join(map(str,quantity)))
+
+
+			return '%.2f'%(price/quantity)
+		
+
+	@classmethod
+	def total_amount_by_supplier(cls,supplier):
+			table = list(Item.objects.filter(supplier__iexact = supplier).aggregate(Sum('price')).values())
+			test = all( i == None for i in table)
+			return 1 if (test) == True else float("".join(map(str,table)))
+
+
+	@classmethod
+	def total_amount_by_date(cls,date):
+			table = list(Item.objects.filter(date__iexact = date).aggregate(Sum('price')).values())
+			test = all( i == None for i in table)
+			return 1 if (test) == True else float("".join(map(str,table)))
+
+
+	@classmethod
+	def total_amount_by_date_range(cls,date, date2):
+			table = list(Item.objects.filter(date__range = [date, date2]).aggregate(Sum('price')).values())
+			test = all( i == None for i in table)
+			return 1 if (test) == True else float("".join(map(str,table)))
+
+
+
+		
+##### figure this out later
+
+	@classmethod
+	def avg_amount_item_by_supplier(cls,supplier, item):
+			table = list(Item.objects.filter( item__iexact = item,supplier__iexact = supplier).aggregate(Sum('price')).values())
+			test = all( i == None for i in table)
+			return 1 if (test) == True else float("".join(map(str,table)))
+
+
+	# @classmethod
+	# def avg_amount_item_by_supplier(cls, item):
+	# 	group = Item.objects.all()
+	# 	group_list = []
+	# 	for i in group:
+	# 			group_list.append(i.supplier)
+	# 	lists = group_list
+	# 	for i in lists:
+  
+	# 		table =  list(Item.objects.filter(item__iexact= item, supplier__iexact=i).aggregate(Sum('price')).values())
+	# 		test = all( i == None for i in table)
+	# 		if (test) == True:
+	# 				return 1
+	# 		else:
+	# 				table = int("".join(map(str,table)))
+	# 		yield table
+
+

@@ -67,3 +67,40 @@ class ById(APIView):
     return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+### Calculation results
+
+
+class TotalPrice(APIView):
+		def get(self, request):
+			total_price = Item.total_price()
+			return Response({"total_price":total_price})
+
+
+class TotalPriceByItem(APIView):
+		def get(self, request,item):
+			total_price_by_item = Item.total_price_by_item(item)
+			return Response({"total_price_by_item":total_price_by_item})
+
+class AvgPriceByItem(APIView):
+		def get(self, request,item):
+			average_price_by_item = Item.average_by_item(item)
+			return Response({"average_price_by_item":average_price_by_item})
+
+class TotalPriceBySupplier(APIView):
+		def get(self, request,supplier):
+			total_amount_by_supplier = Item.total_amount_by_supplier(supplier)
+			return Response({"total_amount_by_supplier":total_amount_by_supplier})
+
+class TotalPriceByDate(APIView):
+		def get(self, request,date):
+			total_amount_by_date = Item.total_amount_by_date(date)
+			return Response({"total_amount_by_date":total_amount_by_date})
+
+
+class TotalPriceByDateRange(APIView):
+		def get(self, request,date, date2):
+			total_amount_by_date_range = Item.total_amount_by_date_range(date, date2)
+			return Response({"total_amount_by_date_range":total_amount_by_date_range})
+
+
+
