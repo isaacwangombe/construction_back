@@ -4,8 +4,8 @@ from .models import Item,Supplier
 # Create your views here.
 
 def welcome(request):
-    total = Item.tbs()
-    return render(request, 'test.html',{'total':total} )
+    # total = Item.tbs()
+    return render(request, 'test.html' )
 
   
 

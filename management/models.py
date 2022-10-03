@@ -95,7 +95,7 @@ class Item(models.Model):
 
 	@classmethod
 	def total_price_by_date(cls):
-			sum_b = Item.objects.values('date').annotate(Sum('price'))
+			sum_b = Item.objects.values('date').annotate(Sum('price')).order_by('date')
 			return sum_b
 
 
