@@ -15,6 +15,7 @@ urlpatterns = [
   ## Calculation apis
 
   path('api/total_price', api_views.TotalPrice.as_view()),
+  path('api/price_by_item', api_views.PriceByItem.as_view()),
   path('api/total_price_by_item/<item>', api_views.TotalPriceByItem.as_view()),
   path('api/average_price_by_item/<item>', api_views.AvgPriceByItem.as_view()),
   path('api/total_amount_by_supplier/<supplier>', api_views.TotalPriceBySupplier.as_view()),

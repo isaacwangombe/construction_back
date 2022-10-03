@@ -55,15 +55,19 @@ class Item(models.Model):
 
 	@classmethod
 	def total_price(cls):
-			table = list(Item.objects.aggregate(Sum('price')).values())
-			test = all( i == None for i in table)
-			return 1 if (test) == True else float("".join(map(str,table)))
+			table = Item.objects.aggregate(Sum('price')).get('price__sum')
+			return 0 if (table) == None else table
 
 	@classmethod
 	def total_price_by_item(cls,item):
 			table = list(Item.objects.filter(item__iexact = item).aggregate(Sum('price')).values())
 			test = all( i == None for i in table)
 			return 1 if (test) == True else float("".join(map(str,table)))
+
+	@classmethod
+	def tbs(cls):
+			sum_b = Item.objects.values('item').annotate(Sum('price'))
+			return sum_b
 
 
 
@@ -129,7 +133,7 @@ class Item(models.Model):
 	# 			group_list.append(i.supplier)
 	# 	lists = group_list
 	# 	for i in lists:
-  
+	
 	# 		table =  list(Item.objects.filter(item__iexact= item, supplier__iexact=i).aggregate(Sum('price')).values())
 	# 		test = all( i == None for i in table)
 	# 		if (test) == True:

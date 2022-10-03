@@ -47,6 +47,12 @@ class ByDateList(APIView):
     serializers = ItemSerializer(items, many=True)
     return Response(serializers.data)
 
+# class PriceByItem(APIView):
+#   def get(self, request, format=None):
+#     items = Item.tbs()
+#     serializers = ItemSerializer(items, many=True)
+#     return Response(serializers.data)
+
 class ById(APIView):
   def get(self, request,id, format=None):
     item = Item.get_by_id(id)
@@ -80,6 +86,11 @@ class TotalPriceByItem(APIView):
 		def get(self, request,item):
 			total_price_by_item = Item.total_price_by_item(item)
 			return Response({"total_price_by_item":total_price_by_item})
+
+class PriceByItem(APIView):
+		def get(self, request):
+			price_by_item = Item.tbs()
+			return Response({"price_by_item":price_by_item})
 
 class AvgPriceByItem(APIView):
 		def get(self, request,item):
