@@ -65,8 +65,13 @@ class Item(models.Model):
 			return 1 if (test) == True else float("".join(map(str,table)))
 
 	@classmethod
-	def tbs(cls):
+	def total_price_by_items(cls):
 			sum_b = Item.objects.values('item').annotate(Sum('price'))
+			return sum_b
+
+	@classmethod
+	def total_price_by_items_supplier(cls):
+			sum_b = Item.objects.values('supplier','item').annotate(Sum('price'))
 			return sum_b
 
 
