@@ -106,7 +106,7 @@ class AvgPriceByItemSupplier(APIView):
 class PriceBySupplier(APIView):
 		def get(self, request):
 			price_by_item = Item.total_price_by_supplier()
-			return Response({price_by_item})
+			return Response({"price_by_item": price_by_item})
 
 class PriceByDate(APIView):
 		def get(self, request):
