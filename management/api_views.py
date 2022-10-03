@@ -47,11 +47,6 @@ class ByDateList(APIView):
     serializers = ItemSerializer(items, many=True)
     return Response(serializers.data)
 
-# class PriceByItem(APIView):
-#   def get(self, request, format=None):
-#     items = Item.tbs()
-#     serializers = ItemSerializer(items, many=True)
-#     return Response(serializers.data)
 
 class ById(APIView):
   def get(self, request,id, format=None):
@@ -82,14 +77,20 @@ class TotalPrice(APIView):
 			return Response({"total_price":total_price})
 
 
-class TotalPriceByItem(APIView):
-		def get(self, request,item):
-			total_price_by_item = Item.total_price_by_item(item)
-			return Response({"total_price_by_item":total_price_by_item})
 
 class PriceByItem(APIView):
 		def get(self, request):
 			price_by_item = Item.total_price_by_items()
+			return Response({"price_by_item":price_by_item})
+
+class AvgByItem(APIView):
+		def get(self, request):
+			price_by_item = Item.avg_price_by_items()
+			return Response({"price_by_item":price_by_item})
+
+class QtyByItem(APIView):
+		def get(self, request):
+			price_by_item = Item.total_quantity_by_item()
 			return Response({"price_by_item":price_by_item})
 
 class PriceByItemSupplier(APIView):
@@ -97,20 +98,21 @@ class PriceByItemSupplier(APIView):
 			price_by_item = Item.total_price_by_items_supplier()
 			return Response({"price_by_item":price_by_item})
 
-class AvgPriceByItem(APIView):
-		def get(self, request,item):
-			average_price_by_item = Item.average_by_item(item)
-			return Response({"average_price_by_item":average_price_by_item})
+class AvgPriceByItemSupplier(APIView):
+		def get(self, request):
+			price_by_item = Item.average_price_by_items_supplier()
+			return Response({"price_by_item":price_by_item})
 
-class TotalPriceBySupplier(APIView):
-		def get(self, request,supplier):
-			total_amount_by_supplier = Item.total_amount_by_supplier(supplier)
-			return Response({"total_amount_by_supplier":total_amount_by_supplier})
+class PriceBySupplier(APIView):
+		def get(self, request):
+			price_by_item = Item.total_price_by_supplier()
+			return Response({"price_by_item":price_by_item})
 
-class TotalPriceByDate(APIView):
-		def get(self, request,date):
-			total_amount_by_date = Item.total_amount_by_date(date)
-			return Response({"total_amount_by_date":total_amount_by_date})
+class PriceByDate(APIView):
+		def get(self, request):
+			price_by_item = Item.total_price_by_date()
+			return Response({"price_by_item":price_by_item})
+
 
 
 class TotalPriceByDateRange(APIView):
@@ -120,3 +122,23 @@ class TotalPriceByDateRange(APIView):
 
 
 
+# class TotalPriceByItem(APIView):
+# 		def get(self, request,item):
+# 			total_price_by_item = Item.total_price_by_item(item)
+# 			return Response({"total_price_by_item":total_price_by_item})
+
+
+# class AvgPriceByItem(APIView):
+# 		def get(self, request,item):
+# 			average_price_by_item = Item.average_by_item(item)
+# 			return Response({"average_price_by_item":average_price_by_item})
+
+# class TotalPriceBySupplier(APIView):
+# 		def get(self, request,supplier):
+# 			total_amount_by_supplier = Item.total_amount_by_supplier(supplier)
+# 			return Response({"total_amount_by_supplier":total_amount_by_supplier})
+
+# class TotalPriceByDate(APIView):
+# 		def get(self, request,date):
+# 			total_amount_by_date = Item.total_amount_by_date(date)
+# 			return Response({"total_amount_by_date":total_amount_by_date})

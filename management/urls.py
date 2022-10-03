@@ -16,11 +16,12 @@ urlpatterns = [
 
   path('api/total_price', api_views.TotalPrice.as_view()),
   path('api/price_by_item', api_views.PriceByItem.as_view()),
+  path('api/avg_price_by_item', api_views.AvgByItem.as_view()),
+  path('api/qty_by_item', api_views.QtyByItem.as_view()),
   path('api/price_by_item_supplier', api_views.PriceByItemSupplier.as_view()),
-  path('api/total_price_by_item/<item>', api_views.TotalPriceByItem.as_view()),
-  path('api/average_price_by_item/<item>', api_views.AvgPriceByItem.as_view()),
-  path('api/total_amount_by_supplier/<supplier>', api_views.TotalPriceBySupplier.as_view()),
-  path('api/total_amount_by_date/<date>', api_views.TotalPriceByDate.as_view()),
+  path('api/avg_price_by_item_supplier', api_views.AvgPriceByItemSupplier.as_view()),
+  path('api/total_price_by_supplier', api_views.PriceBySupplier.as_view()),
+  path('api/total_price_by_date', api_views.PriceByDate.as_view()),
   path('api/total_amount_by_date_range/<date>/<date2>', api_views.TotalPriceByDateRange.as_view()),
 
 
