@@ -113,6 +113,16 @@ class PriceByDate(APIView):
 			price_by_date = Item.total_price_by_date()
 			return Response({"price_by_date":price_by_date})
 
+class PriceByMonth(APIView):
+		def get(self, request):
+			price_by_month = Item.total_price_by_month()
+			return Response({"price_by_month":price_by_month})
+
+class PriceByYear(APIView):
+		def get(self, request):
+			price_by_year = Item.total_price_by_year()
+			return Response({"price_by_year":price_by_year})
+
 
 
 class TotalPriceByDateRange(APIView):

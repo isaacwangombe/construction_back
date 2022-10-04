@@ -22,6 +22,8 @@ urlpatterns = [
   path('api/avg_price_by_item_supplier', api_views.AvgPriceByItemSupplier.as_view()),
   path('api/total_price_by_supplier', api_views.PriceBySupplier.as_view()),
   path('api/total_price_by_date', api_views.PriceByDate.as_view()),
+  path('api/total_price_by_month', api_views.PriceByMonth.as_view()),
+  path('api/total_price_by_year', api_views.PriceByYear.as_view()),
   path('api/total_amount_by_date_range/<date>/<date2>', api_views.TotalPriceByDateRange.as_view()),
 
 

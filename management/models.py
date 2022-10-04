@@ -98,6 +98,16 @@ class Item(models.Model):
 			sum_b = Item.objects.values('date').annotate(Sum('price')).order_by('date')
 			return sum_b
 
+	@classmethod
+	def total_price_by_month(cls):
+			sum_b = Item.objects.values('date__month').annotate(Sum('price')).order_by('date__month')
+			return sum_b
+
+	@classmethod
+	def total_price_by_year(cls):
+			sum_b = Item.objects.values('date__year').annotate(Sum('price')).order_by('date__year')
+			return sum_b
+
 
 	@classmethod
 	def total_amount_by_date_range(cls,date, date2):
