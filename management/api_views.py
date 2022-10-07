@@ -2,8 +2,58 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from .models import Item,Supplier
-from .serializer import ItemSerializer, SupplierSerializer
+from .serializer import ItemSerializer, SupplierSerializer, ProjectSerializer, UserSerializer
+from django.contrib.auth.models import User
 
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.hashers import make_password
+
+
+
+
+# @permission_classes([IsAuthenticated])		
+# def ProjectList(request):
+#   user = request.user					
+#   notes = user.project_set.all()				
+#   serializer = ProjectSerializer(notes, many=True)
+#   return Response(serializer.data)
+
+
+# @permission_classes([IsAuthenticated])		
+# def UserList(request):
+#   # user = request.user					
+#   notes = User.objects.all()				
+#   serializer = UserSerializer(notes, many=True)
+#   return Response(serializer.data)
+
+class UserList(APIView):
+  def get(self, request, format=None):
+    notes = User.objects.all()				
+    serializer = UserSerializer(notes, many=True)
+    return Response(serializer.data)
+
+  def post(self, request, format=None):
+    serializers = UserSerializer(data=request.data)
+    if serializers.is_valid():
+      serializers.save(password=make_password("2385791"))
+      return Response(serializers.data, status=status.HTTP_201_CREATED)
+    return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@permission_classes([IsAuthenticated])		
+class ProjectList(APIView):
+  def get(self, request, format=None):
+    user = request.user
+    all_projects = user.project_set.all()	
+    serializers = ProjectSerializer(all_projects, many=True)
+    return Response(serializers.data)
+
+  def post(self, request, format=None):
+    serializers = SupplierSerializer(data=request.data)
+    if serializers.is_valid():
+      serializers.save()
+      return Response(serializers.data, status=status.HTTP_201_CREATED)
+    return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SupplierList(APIView):
   def get(self, request, format=None):
@@ -18,8 +68,10 @@ class SupplierList(APIView):
       return Response(serializers.data, status=status.HTTP_201_CREATED)
     return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
+#### Items Serialisers ----------------------------------------------------------------
 
 
+# ## General--------------------------------------------------------------------------------
 class ItemList(APIView):
   def get(self, request, format=None):
     all_item = Item.get_all()
@@ -33,22 +85,26 @@ class ItemList(APIView):
       return Response(serializers.data, status=status.HTTP_201_CREATED)
     return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-class BySupplierList(APIView):
-  def get(self, request,supplier, format=None):
-    items = Item.filter_by_supplier(supplier)
+class ItemsByProjectList(APIView):
+  def get(self, request,project, format=None):
+    items = Item.filter_by_project(project)
     serializers = ItemSerializer(items, many=True)
     return Response(serializers.data)
 
-class ByDateList(APIView):
-  def get(self, request, date, format=None):
-    items = Item.filter_by_date(date)
+class ItemsBySupplierList(APIView):
+  def get(self, request,project,supplier, format=None):
+    items = Item.filter_by_supplier(supplier, project)
+    serializers = ItemSerializer(items, many=True)
+    return Response(serializers.data)
+
+class ItemsByDateList(APIView):
+  def get(self, request,project, date, format=None):
+    items = Item.filter_by_date(date, project)
     serializers = ItemSerializer(items, many=True)
     return Response(serializers.data)
 
 
-class ById(APIView):
+class ItemsById(APIView):
   def get(self, request,id, format=None):
     item = Item.get_by_id(id)
     serializers = ItemSerializer(item, many=False)
@@ -68,87 +124,76 @@ class ById(APIView):
     return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-### Calculation results
+### By Item and Project ------------------------------------------------------------------------------------------------
+
+
+class ItemsByProjectAndId(APIView):
+  def get(self, request,project, id, format=None):
+    items = Item.get_by_project_and_id(project, id)
+    serializers = ItemSerializer(items, many=True)
+    return Response(serializers.data)
+
+
+### Calculation results -------------------------------------------------------------
 
 
 class TotalPrice(APIView):
-		def get(self, request):
-			total_price = Item.total_price()
+		def get(self, request,project):
+			total_price = Item.total_price_by_project(project)
 			return Response({"total_price":total_price})
 
 
 
 class PriceByItem(APIView):
-		def get(self, request):
-			price_by_item = Item.total_price_by_items()
+		def get(self, request,project):
+			price_by_item = Item.total_price_by_items_project(project)
 			return Response(price_by_item)
 
 class AvgByItem(APIView):
-		def get(self, request):
-			price_by_item = Item.avg_price_by_items()
+		def get(self, request,project):
+			price_by_item = Item.avg_price_by_items(project)
 			return Response({"price_by_item":price_by_item})
 
 class QtyByItem(APIView):
-		def get(self, request):
-			qty_by_item = Item.total_quantity_by_item()
+		def get(self, request,project):
+			qty_by_item = Item.total_quantity_by_item(project)
 			return Response({"qty_by_item":qty_by_item})
 
 class PriceByItemSupplier(APIView):
-		def get(self, request):
-			price_by_item = Item.total_price_by_items_supplier()
+		def get(self, request,project):
+			price_by_item = Item.total_price_by_items_supplier(project)
 			return Response({"price_by_item":price_by_item})
 
 class AvgPriceByItemSupplier(APIView):
-		def get(self, request):
-			price_by_item = Item.average_price_by_items_supplier()
+		def get(self, request,project):
+			price_by_item = Item.average_price_by_items_supplier(project)
 			return Response({"price_by_item":price_by_item})
 
 class PriceBySupplier(APIView):
-		def get(self, request):
-			price_by_supplier = Item.total_price_by_supplier()
+		def get(self, request,project):
+			price_by_supplier = Item.total_price_by_supplier(project)
 			return Response({"price_by_supplier": price_by_supplier})
 
 class PriceByDate(APIView):
-		def get(self, request):
-			price_by_date = Item.total_price_by_date()
+		def get(self, request,project):
+			price_by_date = Item.total_price_by_date(project)
 			return Response({"price_by_date":price_by_date})
 
 class PriceByMonth(APIView):
-		def get(self, request):
-			price_by_month = Item.total_price_by_month()
+		def get(self, request,project):
+			price_by_month = Item.total_price_by_month(project)
 			return Response({"price_by_month":price_by_month})
 
 class PriceByYear(APIView):
-		def get(self, request):
-			price_by_year = Item.total_price_by_year()
+		def get(self, request,project):
+			price_by_year = Item.total_price_by_year(project)
 			return Response({"price_by_year":price_by_year})
 
 
 
 class TotalPriceByDateRange(APIView):
-		def get(self, request,date, date2):
-			total_amount_by_date_range = Item.total_amount_by_date_range(date, date2)
+		def get(self, request,project,date, date2):
+			total_amount_by_date_range = Item.total_amount_by_date_range(project,date, date2)
 			return Response({"total_amount_by_date_range":total_amount_by_date_range})
 
 
-
-# class TotalPriceByItem(APIView):
-# 		def get(self, request,item):
-# 			total_price_by_item = Item.total_price_by_item(item)
-# 			return Response({"total_price_by_item":total_price_by_item})
-
-
-# class AvgPriceByItem(APIView):
-# 		def get(self, request,item):
-# 			average_price_by_item = Item.average_by_item(item)
-# 			return Response({"average_price_by_item":average_price_by_item})
-
-# class TotalPriceBySupplier(APIView):
-# 		def get(self, request,supplier):
-# 			total_amount_by_supplier = Item.total_amount_by_supplier(supplier)
-# 			return Response({"total_amount_by_supplier":total_amount_by_supplier})
-
-# class TotalPriceByDate(APIView):
-# 		def get(self, request,date):
-# 			total_amount_by_date = Item.total_amount_by_date(date)
-# 			return Response({"total_amount_by_date":total_amount_by_date})
