@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 
 
 class Project(RandomIDModel):
-	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+	user = models.ManyToManyField(User, null=True, blank=True)
 	name = models.CharField(max_length=100)
 	type = models.CharField(max_length=100)
 	projected_cost = models.IntegerField()

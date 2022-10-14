@@ -5,6 +5,7 @@ from .models import Item,Supplier, Project
 
 class ProjectAdmin(admin.ModelAdmin):
     exclude = ["id"]
+    filter_horizontal=('user',)
 
 
 admin.site.register(Item)
