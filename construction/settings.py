@@ -42,7 +42,6 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -197,3 +196,5 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
+CSRF_TRUSTED_ORIGINS = ['https://angelic-art-gallery-production.up.railway.app','https://*.127.0.0.1']
