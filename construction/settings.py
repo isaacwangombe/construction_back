@@ -17,11 +17,11 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 from datetime import timedelta
-
+from dotenv import load_dotenv
 
 
 MODE=config("MODE", default="prod")
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = True
 # development
 
@@ -30,7 +30,9 @@ ALLOWED_HOSTS=["*",]
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
