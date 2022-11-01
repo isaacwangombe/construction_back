@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from .models import Item,Supplier
+from .models import Item,Supplier, Project
 from .serializer import ItemSerializer, SupplierSerializer, ProjectSerializer, UserSerializer
 from django.contrib.auth.models import User
 
@@ -40,11 +40,10 @@ class UserList(APIView):
       return Response(serializers.data, status=status.HTTP_201_CREATED)
     return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@permission_classes([IsAuthenticated])		
+# @permission_classes([IsAuthenticated])		
 class ProjectList(APIView):
-  def get(self, request, format=None):
-    user = request.user
-    all_projects = user.project_set.all()	
+  def get(self, format=None):
+    all_projects = Project.get_all()	
     serializers = ProjectSerializer(all_projects, many=True)
     return Response(serializers.data)
 
@@ -54,6 +53,21 @@ class ProjectList(APIView):
       serializers.save()
       return Response(serializers.data, status=status.HTTP_201_CREATED)
     return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# @permission_classes([IsAuthenticated])		
+# class ProjectList(APIView):
+#   def get(self, request, format=None):
+#     user = request.user
+#     all_projects = user.project_set.all()	
+#     serializers = ProjectSerializer(all_projects, many=True)
+#     return Response(serializers.data)
+
+#   def post(self, request, format=None):
+#     serializers = SupplierSerializer(data=request.data)
+#     if serializers.is_valid():
+#       serializers.save()
+#       return Response(serializers.data, status=status.HTTP_201_CREATED)
+#     return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SupplierList(APIView):
   def get(self, request, format=None):
