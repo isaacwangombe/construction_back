@@ -18,8 +18,9 @@ import cloudinary.uploader
 import cloudinary.api
 from datetime import timedelta
 from dotenv import load_dotenv
-env = os.Env()
-
+import environ
+env = environ.Env()
+env.read_env(env.str('ENV_PATH', '/path/to/.env'))
 
 MODE=config("MODE", default="prod")
 mode = "prod"
