@@ -28,8 +28,8 @@ if mode == "prod":
 	SECRET_KEY = os.getenv("SECRET_KEY")
 	DATABASE_URL = os.getenv("DATABASE_URL")
 elif mode == "dev":
-  	SECRET_KEY = env('SECRET_KEY')
-
+	DATABASE_URL = env('DATABASE_URL')
+	SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = True
 # development
@@ -210,5 +210,5 @@ CSRF_TRUSTED_ORIGINS = ['https://angelic-art-gallery-production.up.railway.app',
 
 
 DATABASES = {
-	"default": dj_database_url.config(default='postgresql://postgres:ah6djggZP3D9bFt5OpdX@containers-us-west-110.railway.app:6636/railway', conn_max_age=1800),
+    "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=1800),
 }
